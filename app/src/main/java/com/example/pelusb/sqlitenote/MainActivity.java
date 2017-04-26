@@ -1,5 +1,6 @@
 package com.example.pelusb.sqlitenote;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText tvNome = (EditText) findViewById(R.id.edtNome);
         final EditText tvEndereco = (EditText) findViewById(R.id.edtEndereco);
         Button btnSalvar = (Button) findViewById(R.id.btnSalvar);
+        Button btnListar = (Button) findViewById(R.id.btnListar);
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 tvNome.setText("");
                 Toast.makeText(MainActivity.this, "Cliente Salvo!",
                                                 Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnListar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ListaCliente.class);
+                startActivity(intent);
             }
         });
 
