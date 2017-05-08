@@ -23,8 +23,15 @@ public class ClienteDAO extends GenericDAO<Cliente> {
     @Override
     public boolean salvar(Cliente cliente) {
         database.execSQL("INSERT INTO cliente(nome, endereco) " +
-                "VALUES ('"+cliente.getNome()+"'," +
-                "'"+cliente.getEndereco()+"')");
+                "VALUES (?,?)",
+                new Object[]{cliente.getNome(), cliente.getEndereco()});
+        return false;
+    }
+
+    @Override
+    public boolean deletar(int id) {
+        database.execSQL("DELETE FROM cliente WHERE idcliente=?",
+                new Object[]{id});
         return false;
     }
 
@@ -47,11 +54,7 @@ public class ClienteDAO extends GenericDAO<Cliente> {
         return clientes;
     }
 
-    @Override
-    public boolean deletar(int id) {
-        database.execSQL("DELETE FROM cliente WHERE idcliente="+id);
-        return false;
-    }
+
 }
 
 

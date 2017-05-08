@@ -8,14 +8,13 @@ import java.util.List;
 
 public abstract class GenericDAO<T> extends SQLiteOpenHelper {
 
-    private static final String NOME_BANCO = "aula_disp2";
+    private static final String NOME_BANCO = "aula_disp4";
     private static final int VERSAO_BANCO = 2;
     private String sqlCreateCliente = "CREATE TABLE IF NOT EXISTS cliente(" +
-            "idcliente INT AUTO_INCREMENT," +
+            "idcliente INTEGER PRIMARY KEY AUTOINCREMENT," +
             "nome VARCHAR(45) NOT NULL," +
             "endereco VARCHAR(45) NOT NULL," +
-            "cpf CHAR(11)," +
-            "PRIMARY KEY(idcliente)"+
+            "cpf CHAR(11)" +
             ");";
 
     public GenericDAO(Context context) {
