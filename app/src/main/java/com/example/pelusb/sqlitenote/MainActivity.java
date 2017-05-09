@@ -1,5 +1,6 @@
 package com.example.pelusb.sqlitenote;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,14 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "aula_sqlite";
 
+    private static Cliente cliente;
+
+    public static void chamaTela(Context context, Cliente cliente){
+        MainActivity.cliente = cliente;
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,14 +37,25 @@ public class MainActivity extends AppCompatActivity {
         Button btnSalvar = (Button) findViewById(R.id.btnSalvar);
         Button btnListar = (Button) findViewById(R.id.btnListar);
 
+        if(cliente!=null){
+            tvNome.setText(cliente.getNome());
+            tvEndereco.setText(cliente.getEndereco());
+        }
+
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClienteDAO clienteDAO = new ClienteDAO(MainActivity.this);
-                Cliente cliente = new Cliente();
+                if(cliente==null) {
+                    cliente = new Cliente();
+                }
                 cliente.setNome(tvNome.getText().toString());
                 cliente.setEndereco(tvEndereco.getText().toString());
-                clienteDAO.salvar(cliente);
+                if(cliente.getId()==0) {
+                    clienteDAO.salvar(cliente);
+                } else {
+                    clienteDAO.atualizar(cliente);
+                }
 
                 tvEndereco.setText("");
                 tvNome.setText("");
