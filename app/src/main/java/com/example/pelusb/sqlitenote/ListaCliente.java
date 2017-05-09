@@ -1,7 +1,9 @@
 package com.example.pelusb.sqlitenote;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,13 +23,50 @@ import java.util.List;
 
 public class ListaCliente extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
+    private ListView listView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
 
+        atualizaListaClientes();
+
+        listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Cliente cliente = (Cliente) parent.getAdapter().getItem(position);
+        final ClienteDAO dao = new ClienteDAO(this);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Opção");
+        builder.setMessage("Escolha uma opção:");
+        builder.setPositiveButton("Editar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("Excluir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dao.deletar(cliente.getId());
+                atualizaListaClientes();
+                Toast.makeText(ListaCliente.this,
+                        "Cliente "+cliente.getNome()+", excluído!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+    public void atualizaListaClientes(){
         ClienteDAO clienteDAO = new ClienteDAO(this);
 
         List<Cliente> clientes = new ArrayList<>();
@@ -39,18 +78,8 @@ public class ListaCliente extends AppCompatActivity implements AdapterView.OnIte
 
         ArrayAdapter<Cliente> adapter =
                 new ArrayAdapter<Cliente>(this, android.R.layout.simple_list_item_1,
-                                    clientes);
+                        clientes);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Cliente cliente = (Cliente) parent.getAdapter().getItem(position);
-        ClienteDAO dao = new ClienteDAO(this);
-        dao.deletar(cliente.getId());
-        Toast.makeText(this, "Cliente "+cliente.getNome()+", excluído!",
-                                                Toast.LENGTH_SHORT).show();
     }
 
 

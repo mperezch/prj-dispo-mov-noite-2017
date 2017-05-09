@@ -54,8 +54,27 @@ public class ClienteDAO extends GenericDAO<Cliente> {
         return clientes;
     }
 
+    @Override
+    public boolean atualizar(Cliente cliente){
+        database.execSQL("UPDATE cliente SET nome=?, endereco=?" +
+                " WHERE idcliente=?",
+                new Object[]{cliente.getNome(), cliente.getEndereco(),
+                    cliente.getId()});
+        return false;
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
