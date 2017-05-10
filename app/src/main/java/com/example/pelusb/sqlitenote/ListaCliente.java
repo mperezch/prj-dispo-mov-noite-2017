@@ -48,7 +48,7 @@ public class ListaCliente extends AppCompatActivity implements AdapterView.OnIte
         builder.setPositiveButton("Editar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                MainActivity.chamaTela(ListaCliente.this, cliente);
             }
         });
         builder.setNegativeButton("Excluir", new DialogInterface.OnClickListener() {
